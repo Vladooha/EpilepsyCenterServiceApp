@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/view/startup/startupShadowView.dart';
+import 'package:frontend/view/screens/splash/splashView.dart';
+//import 'package:firebase/firebase.dart';
 
-void main() => runApp(StartupShadowView());
+void main() {
+  runApp(SplashView());
+}
 
 
 
