@@ -6,7 +6,7 @@ import 'package:frontend/model/calculator/dish.dart';
 class SingleEating {
   final String id;
 
-  EatingType mealTime;
+  Eating mealTime;
   final List<Dish> dishes = [];
 
   SingleEating(

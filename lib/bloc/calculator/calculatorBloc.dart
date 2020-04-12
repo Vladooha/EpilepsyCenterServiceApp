@@ -14,7 +14,6 @@ import 'package:rxdart/rxdart.dart';
 
 class CalculatorBloc extends AbstractBloc {
   /// Test data
-  /// Test data
   List<Product> productList = [
     Product("1", name: "Гречка1", proteins: 1, fats: 1, carbohydrates: 0),
     Product("12", name: "Гречка2", proteins: 1, fats: 1, carbohydrates: 0),
@@ -67,12 +66,12 @@ class CalculatorBloc extends AbstractBloc {
   }
   
   List<SingleEating> getAllSingleEatings() => [
-      SingleEating("1", mealTime: EatingType.breakfast),
-      SingleEating("2", mealTime: EatingType.dinner),
-      SingleEating("3", mealTime: EatingType.launch),
-      SingleEating("4", mealTime: EatingType.evening_meal),
-      SingleEating("5", mealTime: EatingType.snack),
-      SingleEating("6", mealTime: EatingType.night_meal),
+      SingleEating("1", mealTime: Eating.breakfast),
+      SingleEating("2", mealTime: Eating.dinner),
+      SingleEating("3", mealTime: Eating.launch),
+      SingleEating("4", mealTime: Eating.evening),
+      SingleEating("5", mealTime: Eating.snack),
+      SingleEating("6", mealTime: Eating.night),
     ];
   
   static const String BLOC_NAME = "calculator-bloc";
@@ -167,12 +166,12 @@ class CalculatorBloc extends AbstractBloc {
     DailyEating emptyDailyEating = DailyEating(null, date: date);
 
     List<SingleEating> emptySingleEating = [
-      SingleEating(null, mealTime: EatingType.breakfast),
-      SingleEating(null, mealTime: EatingType.dinner),
-      SingleEating(null, mealTime: EatingType.launch),
-      SingleEating(null, mealTime: EatingType.evening_meal),
-      SingleEating(null, mealTime: EatingType.snack),
-      SingleEating(null, mealTime: EatingType.night_meal),
+      SingleEating(null, mealTime: Eating.breakfast),
+      SingleEating(null, mealTime: Eating.dinner),
+      SingleEating(null, mealTime: Eating.launch),
+      SingleEating(null, mealTime: Eating.evening),
+      SingleEating(null, mealTime: Eating.snack),
+      SingleEating(null, mealTime: Eating.night),
     ];
 
     _fillDailyBySingleEatings(emptyDailyEating, emptySingleEating);

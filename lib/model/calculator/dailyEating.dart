@@ -5,7 +5,7 @@ class DailyEating {
   final String id;
 
   DateTime date;
-  final Map<EatingType, SingleEating> singleEatings = {};
+  final Map<Eating, SingleEating> singleEatings = {};
 
   DailyEating(this.id, {this.date});
 }

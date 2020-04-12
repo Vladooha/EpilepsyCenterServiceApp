@@ -116,17 +116,18 @@ class CalculatorProductListViewState extends State<CalculatorProductListView>
 
     if (widget.onChoose == null) {
       children.add(
-          GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Icon(
-                Icons.add,
-                size: 32.0,
-                color: Colors.red,
-              ),
+        GestureDetector(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Icon(
+              Icons.add,
+              size: 32.0,
+              color: Colors.red,
             ),
-            onTap: _openProductCreation,
-          ));
+          ),
+          onTap: _openProductCreation,
+        )
+      );
     }
 
     return Row(

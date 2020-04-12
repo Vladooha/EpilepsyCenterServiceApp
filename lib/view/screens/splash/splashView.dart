@@ -2,19 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/bloc/calculator/calculatorBloc.dart';
-import 'package:frontend/bloc/chat/chatBloc.dart';
+import 'package:frontend/bloc/form/logIn/logInFormBloc.dart';
+import 'package:frontend/bloc/form/signUp/signUpFormBloc.dart';
 import 'package:frontend/bloc/user/userBloc.dart';
 import 'package:frontend/bloc/user/userBlocEvent.dart';
 import 'package:frontend/bloc/user/userBlocState.dart';
-import 'package:frontend/service/database/remoteStorageServiceImpl.dart';
 import 'package:frontend/service/ioc/blocContainerService.dart';
-import 'package:frontend/service/storage/storageServiceImpl.dart';
 import 'package:frontend/view/screens/calculator/calculatorView.dart';
-import 'package:frontend/view/screens/chat/chatListView.dart';
-import 'package:frontend/view/screens/login/loginFormView.dart';
+import 'package:frontend/view/screens/login/loginView.dart';
 import 'package:frontend/view/screens/splash/splashAnimationView.dart';
 import 'package:get_it/get_it.dart';
-//import 'package:firebase/firebase.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
@@ -22,9 +19,11 @@ class SplashView extends StatelessWidget {
   UserBloc userBloc;
 
   SplashView() {
-    _setupIoC();
+    _setupBlocs();
 
     userBloc = BlocContainerService.instance.getAndInit(UserBloc.BLOC_NAME);
+
+    userBloc.events.add(RestoreSession());
   }
 
   @override
@@ -36,62 +35,49 @@ class SplashView extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       navigatorObservers: [routeObserver],
-      home: StreamBuilder<UserData>(
-        initialData: null,
-        stream: userBloc.userData,
+      home: StreamBuilder<UserBlocState>(
+        stream: userBloc.states,
         builder: (context, snapshot) {
-          print('Splash: ${snapshot.data}');
+          UserBlocState state = snapshot.data;
 
-          if (snapshot.hasData) {
-            UserData userData = snapshot.data;
-            if (userData.user != null) {
-              _whenWidgetBuilt(() =>
-                  Navigator
-                      .of(context)
-                      .pushAndRemoveUntil(CalculatorViewRoute(), (cond) => false));
-            } else {
-              _whenWidgetBuilt(() =>
-                  Navigator
-                      .of(context)
-                      .pushAndRemoveUntil(LoginFormRoute(), (cond) => false));
-            }
+          print("Splash state: ${state.runtimeType}");
+
+          if (state is UserLoggedIn) {
+            //_followRoute(CalculatorViewRoute(), context);
+            return Text("Authorized!");
+          } else if (state is UserUnauthorized) {
+            print("Unauth reason: ${state.errorContainer.toString()}");
+            _followRoute(LoginRoute(), context);
           }
 
-          // TODO: Implement splash screen
           return SplashAnimationView();
         },
       ),
       theme: ThemeData(
-        primaryColor: Colors.red[500],
-        accentColor: Colors.grey[600],
+        primaryColor: Colors.purple,
+        accentColor: Colors.grey,
         fontFamily: 'Pacifico',
       ),
     );
   }
 
-  void _setupIoC() {
-    // TODO: Automate dependency order
-    // TODO: Fix beans' self-wiring to IoC container
-
-    print("Setup IoC!");
-
+  void _setupBlocs() {
     var IoC = GetIt.instance;
     IoC.reset();
 
     GetIt.instance.registerSingleton<RouteObserver>(routeObserver, signalsReady: true);
 
-    // Core services
-    StorageServiceImpl();
-    //WebServiceImpl();
-
-    //ChatServiceImpl();
-
-
     BlocContainerService.instance.addIfAbcent(UserBloc(), blocName: UserBloc.BLOC_NAME);
-    BlocContainerService.instance.addIfAbcent(ChatBloc(), blocName: ChatBloc.BLOC_NAME);
     BlocContainerService.instance.addIfAbcent(CalculatorBloc(), blocName: CalculatorBloc.BLOC_NAME);
+    BlocContainerService.instance.addIfAbcent(LogInFormBloc(), blocName: LogInFormBloc.BLOC_NAME);
+    BlocContainerService.instance.addIfAbcent(SignUpFormBloc(), blocName: SignUpFormBloc.BLOC_NAME);
+  }
 
-    RemoteStorageServiceImpl();
+  void _followRoute(PageRoute pageRoute, BuildContext context) {
+    _whenWidgetBuilt(() =>
+        Navigator
+            .of(context)
+            .pushAndRemoveUntil(pageRoute, (cond) => false));
   }
 
   void _whenWidgetBuilt(Function fun) {

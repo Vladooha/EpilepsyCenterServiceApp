@@ -53,11 +53,11 @@ class CalculatorProductViewState extends State<CalculatorProductView>
     if (widget.isNewProduct) {
       var nameInputField = Padding(
         padding: EdgeInsets.all(5.0),
-        child: createInputTextField(
-            "Название",
-            widget.nameController,
-            _validateProductName
-        )
+//        child: createInputTextField(
+//            "Название",
+//            widget.nameController,
+//            _validateProductName
+//        )
       );
 
       children.addAll([

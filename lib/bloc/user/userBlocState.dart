@@ -1,40 +1,26 @@
-import 'dart:math';
-
-import 'package:frontend/bloc/user/userBloc.dart';
+import 'package:frontend/model/common/errorContainer.dart';
 import 'package:frontend/model/user/user.dart';
-import 'package:frontend/model/user/userMetainfo.dart';
 
 abstract class UserBlocState {}
 
+class UserLoading extends UserBlocState {}
 
-abstract class UserActionResult extends UserBlocState {
-  final UserActionsType userActions;
-
-  UserActionResult(this.userActions);
-}
-
-class Success extends UserActionResult {
-  int rand;
-
-  Success(UserActionsType userActions) : super(userActions) {
-    rand = Random().nextInt(100000);
-  }
-}
-
-class Error extends UserActionResult {
-  List<UserActionErrors> errorList;
-
-  Error(UserActionsType userActions, {this.errorList = const []}) : super(userActions);
-}
-
-class Loading extends UserActionResult {
-  Loading(UserActionsType userActions) : super(userActions);
-}
-
-
-class UserData {
+class UserLoggedIn extends UserBlocState {
   final User user;
-  final bool isCurrentUser;
 
-  UserData(this.user, this.isCurrentUser);
+  UserLoggedIn(this.user);
+}
+
+class UserUnauthorized extends UserBlocState {
+  ErrorContainer errorContainer;
+
+  UserUnauthorized.fromErrorContainer(this.errorContainer);
+
+  UserUnauthorized(error) {
+    if (error is ErrorContainer) {
+      errorContainer = error;
+    } else {
+      errorContainer = ErrorContainer(errorList: [error.toString()]);
+    }
+  }
 }

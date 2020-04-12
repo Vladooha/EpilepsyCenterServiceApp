@@ -21,23 +21,23 @@ import 'package:frontend/view/uiparts/popupPart.dart';
 import 'package:get_it/get_it.dart';
 
 class MealTimeView {
-  static const MealTimeView BREAKFAST = MealTimeView._("Завтрак", EatingType.breakfast, Colors.red);
-  static const MealTimeView DINNER = MealTimeView._("Обед", EatingType.dinner, Colors.orange);
-  static const MealTimeView LAUNCH = MealTimeView._("Полдник", EatingType.launch, Colors.yellow);
-  static const MealTimeView EVENING_MEAL = MealTimeView._("Ужин", EatingType.evening_meal, Colors.green);
-  static const MealTimeView SNACK = MealTimeView._("Перекус", EatingType.snack, Colors.blue);
-  static const MealTimeView NIGHT_MEAL = MealTimeView._("Ночь", EatingType.night_meal, Colors.indigo);
+  static const MealTimeView BREAKFAST = MealTimeView._("Завтрак", Eating.breakfast, Colors.red);
+  static const MealTimeView DINNER = MealTimeView._("Обед", Eating.dinner, Colors.orange);
+  static const MealTimeView LAUNCH = MealTimeView._("Полдник", Eating.launch, Colors.yellow);
+  static const MealTimeView EVENING_MEAL = MealTimeView._("Ужин", Eating.evening, Colors.green);
+  static const MealTimeView SNACK = MealTimeView._("Перекус", Eating.snack, Colors.blue);
+  static const MealTimeView NIGHT_MEAL = MealTimeView._("Ночь", Eating.night, Colors.indigo);
 
   static List<MealTimeView> get values => [
     BREAKFAST, DINNER, LAUNCH, EVENING_MEAL, SNACK, NIGHT_MEAL
   ];
 
-  static MealTimeView getByMealTime(EatingType mealTime) =>
+  static MealTimeView getByMealTime(Eating mealTime) =>
       values.firstWhere((element) =>
           element.mealTime == mealTime);
 
   final String name;
-  final EatingType mealTime;
+  final Eating mealTime;
   final Color color;
 
   const MealTimeView._(this.name, this.mealTime, this.color);
@@ -57,7 +57,7 @@ class CalculatorView extends StatefulWidget {
 
 class CalculatorViewState extends State<CalculatorView>
     with RouteAware, DrawerMenuPart, CustomTextPart, PopupPart, CardPart {
-  EatingType chosenMealTime = EatingType.breakfast;
+  Eating chosenMealTime = Eating.breakfast;
   DateTime chosenDateTime;
   DateTime beginDateTime;
 
@@ -156,8 +156,6 @@ class CalculatorViewState extends State<CalculatorView>
 
   /// Complex UI parts ///
 
-
-
   Widget _createTimePickerCalendar() {
     return FlatButton(
       onPressed: _pickTimeByCalendar,
@@ -198,8 +196,7 @@ class CalculatorViewState extends State<CalculatorView>
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                  children:
-                  MealTimeView.values.map(_createMealTimeButton).toList()
+                children: MealTimeView.values.map(_createMealTimeButton).toList()
               ),
             ),
           ),

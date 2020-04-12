@@ -1,8 +1,8 @@
-enum EatingType {
+enum Eating {
   breakfast,
   dinner,
   launch,
-  evening_meal,
+  evening,
   snack,
-  night_meal
+  night
 }

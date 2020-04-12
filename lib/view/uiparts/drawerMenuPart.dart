@@ -8,7 +8,7 @@ import 'package:frontend/service/ioc/blocContainerService.dart';
 import 'package:frontend/view/screens/calculator/calculatorProductListView.dart';
 import 'package:frontend/view/screens/calculator/calculatorView.dart';
 import 'package:frontend/view/screens/chat/chatListView.dart';
-import 'package:frontend/view/screens/login/loginFormView.dart';
+import 'package:frontend/view/screens/login/loginView.dart';
 
 class DrawerMenuPart {
   UserBloc userBloc = BlocContainerService.instance.getAndInit(UserBloc.BLOC_NAME);
@@ -17,39 +17,39 @@ class DrawerMenuPart {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          StreamBuilder<UserData>(
-            initialData: userBloc.lastCurrentUserData,
-            stream: userBloc.currentUserData,
-            builder: (context, snapshot) {
-              Widget avatar = Icon(Icons.broken_image);
-              Widget fullName = Text("Загрузка...");
-
-              if (snapshot.hasData && snapshot.data.user != null) {
-                User user = snapshot.data.user;
-
-                avatar = _createAvatar(user);
-                fullName = Text("${user.name} ${user.surname}");
-              }
-
-              return UserAccountsDrawerHeader(
-                 currentAccountPicture: avatar,
-                 accountName: fullName
-              );
-            }
-          ),
-          //_createListTile("Чаты", context, ChatListViewRoute(), iconData: Icons.chat_bubble),
-          _createListTile("Диета", context, CalculatorViewRoute(), iconData: Icons.table_chart),
-          _createListTile("Продукты", context, CalculatorProductListViewRoute(), iconData: Icons.restaurant),
-          _createListTile(
-            "Выход",
-            context,
-            LoginFormRoute(),
-            iconData: Icons.exit_to_app,
-            onTap: () {
-              userBloc.eventListener.add(UserAction(UserActionsType.logOut));
-            },
-            clearNavigation: true,
-          ),
+//          StreamBuilder<UserData>(
+//            initialData: userBloc.lastCurrentUserData,
+//            stream: userBloc.currentUserData,
+//            builder: (context, snapshot) {
+//              Widget avatar = Icon(Icons.broken_image);
+//              Widget fullName = Text("Загрузка...");
+//
+//              if (snapshot.hasData && snapshot.data.user != null) {
+//                User user = snapshot.data.user;
+//
+//                avatar = _createAvatar(user);
+//                fullName = Text("${user.name} ${user.surname}");
+//              }
+//
+//              return UserAccountsDrawerHeader(
+//                 currentAccountPicture: avatar,
+//                 accountName: fullName
+//              );
+//            }
+//          ),
+//          //_createListTile("Чаты", context, ChatListViewRoute(), iconData: Icons.chat_bubble),
+//          _createListTile("Диета", context, CalculatorViewRoute(), iconData: Icons.table_chart),
+//          _createListTile("Продукты", context, CalculatorProductListViewRoute(), iconData: Icons.restaurant),
+//          _createListTile(
+//            "Выход",
+//            context,
+//            LoginFormRoute(),
+//            iconData: Icons.exit_to_app,
+//            onTap: () {
+//              userBloc.eventListener.add(UserAction(UserActionsType.logOut));
+//            },
+//            clearNavigation: true,
+//          ),
         ],
       ),
     );
@@ -98,13 +98,14 @@ class DrawerMenuPart {
     return Container(
       width: 50.0,
       height: 50.0,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: user.avatar
-          )
-      ),
+//      decoration: BoxDecoration(
+//          shape: BoxShape.circle,
+//          image: DecorationImage(
+//              fit: BoxFit.fill,
+//              image: user.avatar
+//          )
+//      ),
+      child: Icon(Icons.person),
     );
   }
 }
